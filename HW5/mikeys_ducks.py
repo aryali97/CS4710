@@ -15,6 +15,11 @@ mikeys_ducks_info = {'utility': 1000000}
 }
 '''
 
+def check_key(state, key):
+    if key not in state or state[key] == None:
+        return False
+    return True
+
 def phase1(state): 
     pass
 ###
