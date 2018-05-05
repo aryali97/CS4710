@@ -138,8 +138,8 @@ if __name__ == "__main__":
         act_prof = machine_tups[ind][2] * (machine_tups[ind][0]/(machine_tups[ind][0] + machine_tups[ind][1])) - machine_tups[ind][3]
         # Prints the following
         # Machine number
-        # Predicted alpha beta scale cost = predicted expected payoff
         # Actual    alpha beta scale cost = actual expected payoff
+        # Predicted alpha beta scale cost = predicted expected payoff
         # Number of times pulled
         print(ind)
         print("%2d %2d %5.2f %5.2f = %5.2f" % (machine_tups[ind][0], machine_tups[ind][1], machine_tups[ind][2], machine_tups[ind][3], act_prof))
