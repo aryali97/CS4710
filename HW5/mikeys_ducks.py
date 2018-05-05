@@ -17,6 +17,7 @@ mikeys_ducks_info = {'utility': 1000000, 'machines-done': set()}
 }
 '''
 
+
 def check_key(state, key):
     if key not in state or state[key] == None:
         return False
@@ -42,14 +43,13 @@ def phase1(state):
     if state['pulls-left'] % 100 == 0:
         print(state['pulls-left'])
     """
-
+    
     if state['pulls-left'] == 9000:
         mikeys_ducks_info['alph-beta-scal'] = []
         for i in range(100):
             alph, beta, _, scal = beta_mod.fit(mikeys_ducks_info['payoffs'][i])
             mikeys_ducks_info['alph-beta-scal'].append(((scal*alph)/(alph+beta), alph, beta, scal, i))
-
-    if state['pulls-left'] == 10000:
+    elif state['pulls-left'] == 10000:
         mikeys_ducks_info['costs'] = [0 for i in range(100)]
         mikeys_ducks_info['metadata'] = ['00000000' for i in range(100)]
         mikeys_ducks_info['payoffs'] = [[] for i in range(100)]
@@ -75,18 +75,28 @@ def phase1(state):
     else:
         best_prof, best_ind = get_best_profit_index()
         move['pull'] = best_ind
-
     mikeys_ducks_info['last-pull'] = move['pull']
+
+    if state['pulls-left'] == 1:
+        mikeys_ducks_info['machines-done'].add(move['pull'])
+        mikeys_ducks_info['auctions'] = sorted(list(mikeys_ducks_info['machines-done']),
+                                               key = lambda x: -1*(mikeys_ducks_info['alph-beta-scal'][x][0] - mikeys_ducks_info['costs'][x]))
     return move
-        
-        
 ###
 
 def phase2a(state):
-    pass
+    return {
+    "team-code": "eef8976e",
+    "game": "phase_2_a",
+    "auctions": mikeys_ducks_info['auctions']
+    }
 ###
 
 def phase2b(state):
+    num_buyers = len(state['auction-lists'][state['auction-number']])
+    utility = mikeys_ducks_info['utility']
+    # utility/num_auctions * payoff_factor * num_buyers_factor
+
     pass
 
 def get_move(state):
@@ -99,10 +109,10 @@ def get_move(state):
     else:
         raise Exception("Game not specified")
 
-
 if __name__ == "__main__":
     machine_tups = []
     for i in range(100):
+        # Sets up machines with the following
         # alph, beta, scal, cost
         machine_tups.append((randint(1, 10), randint(1, 10), uniform(0.1, 20), uniform(0.1, 20)))
 
@@ -126,15 +136,17 @@ if __name__ == "__main__":
     for i in range(100):
         ind = absi_sorted[i][4]
         act_prof = machine_tups[ind][2] * (machine_tups[ind][0]/(machine_tups[ind][0] + machine_tups[ind][1])) - machine_tups[ind][3]
-        """
+        # Prints the following
+        # Machine number
+        # Predicted alpha beta scale cost = predicted expected payoff
+        # Actual    alpha beta scale cost = actual expected payoff
         print(ind)
         print("%2d %2d %5.2f %5.2f = %5.2f" % (machine_tups[ind][0], machine_tups[ind][1], machine_tups[ind][2], machine_tups[ind][3], act_prof))
         print("%2d %2d %5.2f %5.2f = %5.2f" % (int(round(absi_sorted[i][1])), int(round(absi_sorted[i][2])), absi_sorted[i][3], mikeys_ducks_info['costs'][ind], absi_sorted[i][0] - mikeys_ducks_info['costs'][ind]))
         print(len(mikeys_ducks_info['payoffs'][ind]))
         print("")
-        """
-    print("Total utility:", mikeys_ducks_info['utility'])
-    print(time() - time_start)
-        
 
+    print("Total utility:", mikeys_ducks_info['utility'])
+    print(mikeys_ducks_info['auctions'])
+    print(time() - time_start)
 ###
