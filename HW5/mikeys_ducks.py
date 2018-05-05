@@ -140,6 +140,7 @@ if __name__ == "__main__":
         # Machine number
         # Predicted alpha beta scale cost = predicted expected payoff
         # Actual    alpha beta scale cost = actual expected payoff
+        # Number of times pulled
         print(ind)
         print("%2d %2d %5.2f %5.2f = %5.2f" % (machine_tups[ind][0], machine_tups[ind][1], machine_tups[ind][2], machine_tups[ind][3], act_prof))
         print("%2d %2d %5.2f %5.2f = %5.2f" % (int(round(absi_sorted[i][1])), int(round(absi_sorted[i][2])), absi_sorted[i][3], mikeys_ducks_info['costs'][ind], absi_sorted[i][0] - mikeys_ducks_info['costs'][ind]))
