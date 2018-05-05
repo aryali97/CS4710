@@ -15,20 +15,31 @@ mikeys_ducks_info = {'utility': 1000000}
 }
 '''
 
+
 def check_key(state, key):
     if key not in state or state[key] == None:
         return False
     return True
 
-def phase1(state): 
+#should update info with a list of top 10 machines to buy maybe
+def phase1(state):
+    mikeys_ducks_info['auctions'] = []
     pass
 ###
 
 def phase2a(state):
-    pass
+    return {
+    "team-code": "eef8976e",
+    "game": "phase_2_a",
+    "auctions": mikeys_ducks_info['auctions']
+    }
 ###
 
 def phase2b(state):
+    num_buyers = len(state['auction-lists'][state['auction-number']])
+    utility = mikeys_ducks_info['utility']
+    # utility/num_auctions * payoff_factor * num_buyers_factor
+
     pass
 
 def get_move(state):
@@ -40,7 +51,6 @@ def get_move(state):
         return phase2b(state)
     else:
         raise Exception("Game not specified")
-
 
 def main():
     pass
